@@ -5,28 +5,30 @@
  */
 
 #include <iostream>
-#include <array>
 
 #include "nfv2/nfv2.hpp"
 
-int main()
+#include "array.h"
+
+int main(int argc, char** argv)
 {
-	nfv2::Request request(nfv2::Address(0x01));
+	nfv2::FrameParser frameParser;
 
-	nfv2::SetDrivesModeCmd setDrivesModeCmd(nfv2::DrivesMode::Current);
-	// nfv2::SetDrivesCurrentCmd setDrivesCurrentCmd(int16_t(256));
+	etl::array<uint8_t, 16> buffer = { '#', 6, static_cast<uint8_t>(~6), 1, 1, 0, 12 };
+	nfv2::FrameParser::Status status;
+	std::tie(status, std::ignore) = 
+		frameParser.parse(buffer.begin(), buffer.end());
 
-	request.addCommand(&setDrivesModeCmd);
-	// request.addCommand(&setDrivesCurrentCmd);
-
-	std::array<uint8_t, 128> buffer;
-	const auto writtenBytes = request.write(buffer.data(), buffer.size());
-
-	std::cout << "Written: " << writtenBytes << std::endl;
-	std::cout << std::hex << std::showbase;
-	for(size_t i = 0; i < writtenBytes; ++i)
+	if(status == nfv2::FrameParser::Status::Good)
 	{
-		std::cout << (int)buffer[i] << ", ";
+		std::cout << "good" << std::endl;
+	} 
+	else if(status == nfv2::FrameParser::Status::Bad)
+	{
+		std::cout << "bad" << std::endl;
 	}
-	std::cout << std::endl;
+	else
+	{
+		std::cout << "unknown" << std::endl;
+	}
 }
