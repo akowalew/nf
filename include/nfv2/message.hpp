@@ -1,19 +1,22 @@
 /**
- * message.hpp
+ * Message.hpp
  * Contains declaration of Message class
  * Author: akowalew
  */
 
 #pragma once
 
+#include "vector.h" // ETLCPP
+
 namespace nfv2 {
 
-class Message
+struct Message
 {
-public:
+    constexpr static auto BufferBytesMax = 8;
+    using Buffer = etl::vector<uint8_t, BufferBytesMax>;
 
-private:
-
+    uint8_t code;
+    Buffer buffer;
 };
 
 } // namespace nfv2
