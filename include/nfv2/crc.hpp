@@ -6,11 +6,24 @@
 
 #pragma once
 
-#include <cstdint>
 #include <cstdlib>
+#include <cstdint>
 
 namespace nfv2 {
 	
-uint8_t crcU8(const uint8_t* buffer, size_t bufferSize);
+class Crc
+{
+public:
+    void init(uint8_t data);
+    void step(uint8_t data);
+
+    uint8_t getRemainder() const
+    {
+        return _remainder;
+    }
+
+private:
+    uint8_t _remainder;
+};
 
 } // namespace nfv2

@@ -6,6 +6,11 @@
 
 #include "nfv2/crc.hpp"
 
+#include <cstdint>
+#include <cstdlib>
+
+#define WIDTH 8
+
 namespace nfv2 {
 	
 /**
@@ -46,19 +51,15 @@ static const uint8_t crcTable[256] = {
     0x20, 0xf8, 0x48, 0x90, 0xf0, 0x28, 0x98, 0x40
 };
 
-uint8_t crcU8(const uint8_t* buffer, size_t bufferSize)
+void Crc::init(uint8_t data)
 {
-    uint8_t remainder = 0;
+    _remainder = crcTable[data];
+}
 
-    // divide the buffer by the polynomial, a byte at a time.
-    for (size_t i = 0; i < bufferSize; ++i)
-    {
-        uint8_t data = buffer[i] ^ remainder;
-        remainder = crcTable[data] ^ (remainder << 8);
-    }
-
-    // the final remainder is the CRC.
-    return remainder;
+void Crc::step(uint8_t data)
+{
+    data = data ^ _remainder;
+    _remainder = crcTable[data] ^ (_remainder << 8);
 }
 
 } // namespace nfv2
