@@ -7,12 +7,12 @@
 #pragma once
 
 #include "nfv2/address.hpp"
-#include "nfv2/command.hpp"
+#include "nfv2/answer.hpp"
+#include "nfv2/crc.hpp"
+#include "nfv2/drives-mode.hpp"
+#include "nfv2/frame-parser.hpp"
+#include "nfv2/frame.hpp"
 #include "nfv2/master.hpp"
 #include "nfv2/message.hpp"
-#include "nfv2/reply.hpp"
-#include "nfv2/request.hpp"
-#include "nfv2/response.hpp"
-#include "nfv2/slave.hpp"
-
-#include "nfv2/cmds/cmds.hpp"
+#include "nfv2/request-handler.hpp"
+#include "nfv2/slave-instance.hpp"
