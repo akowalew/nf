@@ -3,22 +3,14 @@
 # Author: akowalew
 
 add_library(nfv2
-	address.cpp
-	command.cpp
 	crc.cpp
+	frame-parser.cpp
 	master.cpp
-	message.cpp
-	reply.cpp
-	request.cpp
-	response.cpp
-	slave.cpp
+	request-handler.cpp
+	slave-instance.cpp
 )
 
-add_subdirectory(cmds)
-
-target_link_libraries(nfv2
-	nfv2_cmds
-)
+target_link_libraries(nfv2)
 
 set_target_properties(nfv2 PROPERTIES
     CXX_STANDARD 14
