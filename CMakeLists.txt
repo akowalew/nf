@@ -13,6 +13,9 @@ option(BUILD_EXAMPLES "Build examples of usage of NFv2" ON)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
 
+include_directories(etl/src)
+include_directories(etl/test)
+
 include_directories(include)
 add_subdirectory(src)
 
