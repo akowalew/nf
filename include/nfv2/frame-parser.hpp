@@ -63,9 +63,8 @@ private:
     isContentLengthValid(uint8_t contentLength)
     {
         constexpr auto maxContentLength = 
-        	1 + 1 + 1 + 1 // start + CL + ~CL + Addr + 
-            + Frame::MessagesMax 
-            	* (1 + 1 + Message::BufferBytesMax); // Code + Size + Data
+        	1 + 1 + 1 + 1 + 1 // start + CL + ~CL + Addr
+            + Frame::MaxMessages * (1 + 1 + Message::MaxDataBytes); // Code + Size + Data
         static_assert(maxContentLength <= std::numeric_limits<uint8_t>::max(),
         	"Maximum content length exceedes uint8_t values range");
         return contentLength <= maxContentLength;
