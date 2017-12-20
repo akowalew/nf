@@ -1,5 +1,3 @@
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -DNDEBUG -O2")
-
 add_executable(master-example
 	master-example.cpp
 )
