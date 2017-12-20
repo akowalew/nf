@@ -12,11 +12,13 @@ namespace nfv2 {
 
 struct Message
 {
-    constexpr static auto BufferBytesMax = 8;
-    using Buffer = etl::vector<uint8_t, BufferBytesMax>;
+    constexpr static auto MaxDataBytes = 8;
+    using Data = etl::vector<uint8_t, MaxDataBytes>;
 
     uint8_t code;
-    Buffer buffer;
+    Data data;
+
+    constexpr static auto MaxBufferSize = 1 + MaxDataBytes;
 };
 
 } // namespace nfv2
