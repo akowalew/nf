@@ -73,12 +73,12 @@ FrameParser::consume(uint8_t byte)
 	        std::cout << "MessageDataLength\n";
 
             if(_bytesCount++ >= _contentLength
-                || byte > Message::BufferBytesMax)
+                || byte > Message::MaxDataBytes)
             {
                 return Status::Bad;
             }
 
-            _message.buffer.resize(byte);
+            _message.data.resize(byte);
             _crc.step(byte);
 
             if(byte != 0) // non-zero message data length
@@ -105,17 +105,17 @@ FrameParser::consume(uint8_t byte)
 	        std::cout << "MessageData\n";
 
             if(_bytesCount++ >= _contentLength
-                ||  _bufferIdx >= _message.buffer.size())
+                ||  _bufferIdx >= _message.data.size())
             {
                 return Status::Bad;
             }
 
-            _message.buffer[_bufferIdx++] = byte;
+            _message.data[_bufferIdx++] = byte;
             _crc.step(byte);
 
-            if(_bufferIdx == _message.buffer.size()) // if message data completed
+            if(_bufferIdx == _message.data.size()) // if message data completed
             {
-                if(_frame.messages.size() == Frame::MessagesMax)
+                if(_frame.messages.size() == Frame::MaxMessages)
                 {
                     return Status::Bad;
                 }
