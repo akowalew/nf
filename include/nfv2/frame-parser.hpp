@@ -48,8 +48,8 @@ private:
     enum class State
     {
         StartByte,
-        ContentLength,
-        ContentLengthBitwiseNegated,
+        FrameLength,
+        FrameLengthBitwiseNegated,
         Address,
         MessageCode,
         MessageDataLength,
@@ -59,19 +59,8 @@ private:
 
 	Status consume(uint8_t byte);
 
-    constexpr static bool 
-    isContentLengthValid(uint8_t contentLength)
-    {
-        constexpr auto maxContentLength = 
-        	1 + 1 + 1 + 1 + 1 // start + CL + ~CL + Addr
-            + Frame::MaxMessages * (1 + 1 + Message::MaxDataBytes); // Code + Size + Data
-        static_assert(maxContentLength <= std::numeric_limits<uint8_t>::max(),
-        	"Maximum content length exceedes uint8_t values range");
-        return contentLength <= maxContentLength;
-    }
-
     State _state = State::StartByte;
-    uint8_t _contentLength;
+    uint8_t _frameLength;
     uint8_t _bytesCount;
     Message _message;
     uint8_t _bufferIdx;

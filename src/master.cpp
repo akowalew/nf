@@ -10,25 +10,25 @@
 
 namespace nfv2 {
 	
-void Master::addSlaveInstance(SlaveInstance slaveInstance)
+void Master::addSlaveEndpoint(SlaveEndpoint slaveEndpoint)
 {
-	const auto slaveAddress = slaveInstance.getAddress();
-	_slavesInstances.insert(
-		std::make_pair(slaveAddress, std::move(slaveInstance)));
+	const auto slaveAddress = slaveEndpoint.getAddress();
+	_slavesEndpoints.insert(
+		std::make_pair(slaveAddress, std::move(slaveEndpoint)));
 }
 
-void Master::send(Address address, const Frame& request, Frame& response)
+void Master::send(const Frame& request, Frame& response)
 {
-	auto slaveInstance = _slavesInstances.find(address);
-	assert(slaveInstance != _slavesInstances.end()); // assume that found
-	slaveInstance->second.send(request, response);
+	auto slaveEndpoint = _slavesEndpoints.find(request.address);
+	assert(slaveEndpoint != _slavesEndpoints.end()); // assume that found
+	slaveEndpoint->second.send(request, response);
 }
 
-void Master::send(Address address, const Frame& request)
+void Master::send(const Frame& request)
 {
-	auto slaveInstance = _slavesInstances.find(address);
-	assert(slaveInstance != _slavesInstances.end()); // assume that found
-	slaveInstance->second.send(request);
+	auto slaveEndpoint = _slavesEndpoints.find(request.address);
+	assert(slaveEndpoint != _slavesEndpoints.end()); // assume that found
+	slaveEndpoint->second.send(request);
 }
 
 } // namespace nfv2

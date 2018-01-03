@@ -10,33 +10,28 @@ FrameParser::consume(uint8_t byte)
     switch(_state)
     {
         case State::StartByte:
-	        std::cout << "StartByte\n";
             if(byte != '#')
             {
                 return Status::Bad;
             }
 
-            _state = State::ContentLength;
+            _state = State::FrameLength;
             
             return Status::Unknown;
         
-        case State::ContentLength:
-	        std::cout << "ContentLength\n";
-
-            if(!isContentLengthValid(byte))
+        case State::FrameLength:
+            if(byte > Frame::MaxLength)
             {
                 return Status::Bad;
             }
 
-            _contentLength = byte;
-            _state = State::ContentLengthBitwiseNegated;
+            _frameLength = byte;
+            _state = State::FrameLengthBitwiseNegated;
 
             return Status::Unknown;
 
-        case State::ContentLengthBitwiseNegated:
-	        std::cout << "ContentLengthBitwiseNegated\n";
-
-            if(byte != static_cast<uint8_t>(~_contentLength))
+        case State::FrameLengthBitwiseNegated:
+            if(byte != static_cast<uint8_t>(~_frameLength))
             {
                 return Status::Bad;
             }
@@ -46,9 +41,7 @@ FrameParser::consume(uint8_t byte)
             return Status::Unknown;
 
         case State::Address:
-	        std::cout << "Address\n";
-
-            _frame.address = byte;
+            _frame.address = Address(byte);
             _crc.init(byte); // calculate CRC from address to last's message last data
             _state = State::MessageCode;
             _bytesCount = 4; // four bytes processed from now
@@ -56,9 +49,7 @@ FrameParser::consume(uint8_t byte)
             return Status::Unknown;
 
         case State::MessageCode:
-	        std::cout << "MessageCode\n";
-
-            if(_bytesCount++ >= _contentLength)
+            if(_bytesCount++ >= _frameLength)
             {
                 return Status::Bad;
             }
@@ -70,10 +61,8 @@ FrameParser::consume(uint8_t byte)
             return Status::Unknown;
 
         case State::MessageDataLength:
-	        std::cout << "MessageDataLength\n";
-
-            if(_bytesCount++ >= _contentLength
-                || byte > Message::MaxDataBytes)
+            if(_bytesCount++ >= _frameLength
+                || byte > Message::MaxDataLength)
             {
                 return Status::Bad;
             }
@@ -89,7 +78,7 @@ FrameParser::consume(uint8_t byte)
             else // empty message data
             {
                 _frame.messages.push_back(_message);
-                if(_bytesCount == _contentLength) // this was the last message
+                if(_bytesCount == _frameLength) // this was the last message
                 {
                     _state = State::Crc;
                 }
@@ -102,9 +91,7 @@ FrameParser::consume(uint8_t byte)
             return Status::Unknown;
 
         case State::MessageData:
-	        std::cout << "MessageData\n";
-
-            if(_bytesCount++ >= _contentLength
+            if(_bytesCount++ >= _frameLength
                 ||  _bufferIdx >= _message.data.size())
             {
                 return Status::Bad;
@@ -121,7 +108,7 @@ FrameParser::consume(uint8_t byte)
                 }
 
                 _frame.messages.push_back(_message);
-                if(_bytesCount == _contentLength) // this was the last message
+                if(_bytesCount == _frameLength) // this was the last message
                 {
                     _state = State::Crc;
                 }
@@ -134,8 +121,6 @@ FrameParser::consume(uint8_t byte)
             return Status::Unknown;
         
         case State::Crc:
-	        std::cout << "Crc\n";
-        
             if(byte != _crc.getRemainder())
             {
                 return Status::Bad;

@@ -10,22 +10,23 @@
 
 #include "nfv2/address.hpp"
 #include "nfv2/frame.hpp"
-#include "nfv2/slave-instance.hpp"
+#include "nfv2/slave-endpoint.hpp"
 
 namespace nfv2 {
 
 class Master
 {
 public:
-	void addSlaveInstance(SlaveInstance slaveInstance);
+	void addSlaveEndpoint(SlaveEndpoint slaveEndpoint);
 
-	void send(Address address, const Frame& request, Frame& response);
-	void send(Address address, const Frame& request);
+	void send(const Frame& request, Frame& response);
+	void send(const Frame& request);
 
 private:
-	using SlavesInstances = etl::flat_map<Address, SlaveInstance, 8>;
+	constexpr static auto SlavesMax = 8;
+	using SlavesEndpoints = etl::flat_map<Address, SlaveEndpoint, SlavesMax>;
 
-	SlavesInstances _slavesInstances;
+	SlavesEndpoints _slavesEndpoints;
 };
 
 } // namespace nfv2
