@@ -14,6 +14,13 @@ namespace nfv2 {
 class Crc
 {
 public:
+	Crc() = default;
+
+	explicit Crc(uint8_t data)
+	{
+		init(data);
+	}
+
     void init(uint8_t data);
     void step(uint8_t data);
 
