@@ -5,9 +5,10 @@
 add_library(nfv2
 	crc.cpp
 	frame-parser.cpp
+	frame.cpp
 	master.cpp
 	request-handler.cpp
-	slave-instance.cpp
+	slave-endpoint.cpp
 )
 
 target_link_libraries(nfv2)
