@@ -10,25 +10,29 @@
 
 #include "array.h"
 
+void sendHandler(const uint8_t* buffer, size_t size)
+{
+	std::cout << "sendHandler: sending data: ";
+	const auto bufferEnd = buffer + size;
+	while(buffer != bufferEnd)
+	{
+		std::cout << (int)*(buffer++) << ", ";
+	}
+	std::cout << "\n";
+}
+
 int main(int argc, char** argv)
 {
-	nfv2::FrameParser frameParser;
+	nfv2::Master master;
+	master.addSlaveEndpoint(
+		nfv2::SlaveEndpoint(nfv2::Address(0x01), sendHandler));
 
-	etl::array<uint8_t, 16> buffer = { '#', 6, static_cast<uint8_t>(~6), 1, 1, 0, 12 };
-	nfv2::FrameParser::Status status;
-	std::tie(status, std::ignore) = 
-		frameParser.parse(buffer.begin(), buffer.end());
+	nfv2::Frame request;
+	request.address = nfv2::Address(0x01);
 
-	if(status == nfv2::FrameParser::Status::Good)
-	{
-		std::cout << "good" << std::endl;
-	} 
-	else if(status == nfv2::FrameParser::Status::Bad)
-	{
-		std::cout << "bad" << std::endl;
-	}
-	else
-	{
-		std::cout << "unknown" << std::endl;
-	}
+	nfv2::Message message;
+	message.code = 0x01;
+	request.messages.push_back(message);
+
+	master.send(request);
 }
