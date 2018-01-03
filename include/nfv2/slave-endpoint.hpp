@@ -1,6 +1,6 @@
 /**
- * slave-instance.hpp
- * Contains declaration of SlaveInstance class
+ * slave-endpoint.hpp
+ * Contains declaration of SlaveEndpoint class
  * Author: akowalew
  */
 
@@ -13,12 +13,12 @@
 
 namespace nfv2 {
 
-class SlaveInstance
+class SlaveEndpoint
 {
 public:
-	using SendHandler = size_t (*)(const uint8_t* buffer, size_t size);
+	using SendHandler = void (*)(const uint8_t* buffer, size_t size);
 
-	SlaveInstance(Address address, SendHandler sendHandler);
+	SlaveEndpoint(Address address, SendHandler sendHandler);
 
 	void send(const Frame& request, Frame& response);
 	void send(const Frame& request);
@@ -31,7 +31,7 @@ public:
 private:
 	Address _address;
 	SendHandler _sendHandler;
-	std::array<uint8_t, Frame::MaxBufferSize> _buffer;
+	std::array<uint8_t, Frame::MaxSize> _buffer;
 };
 
 } // namespace nfv2
