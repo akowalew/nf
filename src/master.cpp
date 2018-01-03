@@ -17,11 +17,11 @@ void Master::addSlaveEndpoint(SlaveEndpoint slaveEndpoint)
 		std::make_pair(slaveAddress, std::move(slaveEndpoint)));
 }
 
-void Master::send(const Frame& request, Frame& response)
+void Master::send(const Frame& request, SlaveEndpoint::Callback callback)
 {
 	auto slaveEndpoint = _slavesEndpoints.find(request.address);
 	assert(slaveEndpoint != _slavesEndpoints.end()); // assume that found
-	slaveEndpoint->second.send(request, response);
+	slaveEndpoint->second.send(request, callback);
 }
 
 void Master::send(const Frame& request)
@@ -29,6 +29,13 @@ void Master::send(const Frame& request)
 	auto slaveEndpoint = _slavesEndpoints.find(request.address);
 	assert(slaveEndpoint != _slavesEndpoints.end()); // assume that found
 	slaveEndpoint->second.send(request);
+}
+
+void Master::handleReceive(Address address, const uint8_t* buffer, size_t size)
+{
+	auto slaveEndpoint = _slavesEndpoints.find(address);
+	assert(slaveEndpoint != _slavesEndpoints.end()); // assume that found
+	slaveEndpoint->second.handleReceive(buffer, size);	
 }
 
 } // namespace nfv2

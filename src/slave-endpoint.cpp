@@ -23,9 +23,47 @@ void SlaveEndpoint::send(const Frame& request)
 	_sendHandler(_buffer.data(), requestSize);
 }
 
-void SlaveEndpoint::send(const Frame& request, Frame& response)
+bool SlaveEndpoint::send(const Frame& request, Callback callback)
 {
 	send(request);
+	if(_callbacks.full())
+	{
+		return false;
+	}
+
+	_callbacks.push(callback);
+	return true;
+}
+
+void SlaveEndpoint::handleReceive(const uint8_t* buffer, size_t size)
+{
+	const auto bufferEnd = buffer + size;
+	do
+	{
+		FrameParser::Status status;
+		const uint8_t* parseEnd;
+		std::tie(status, parseEnd) = _responseParser.parse(buffer, bufferEnd);
+		if(status == FrameParser::Status::Good)
+		{
+			if(_callbacks.empty())
+			{
+				// TODO: LOG SOMETHING
+			}
+			else
+			{
+				const auto callback = _callbacks.front();
+				callback(_responseParser.getFrame());
+				_callbacks.pop();
+			}
+		}
+		else if(status == FrameParser::Status::Bad)
+		{
+			// TODO: LOG SOMETHING
+		}
+
+		buffer = parseEnd;
+	}
+	while(buffer != bufferEnd);
 }
 
 } // namespace nfv2

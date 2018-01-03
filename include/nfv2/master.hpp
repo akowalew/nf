@@ -19,8 +19,10 @@ class Master
 public:
 	void addSlaveEndpoint(SlaveEndpoint slaveEndpoint);
 
-	void send(const Frame& request, Frame& response);
+	void send(const Frame& request, SlaveEndpoint::Callback callback);
 	void send(const Frame& request);
+
+	void handleReceive(Address address, const uint8_t* buffer, size_t size);
 
 private:
 	constexpr static auto SlavesMax = 8;
