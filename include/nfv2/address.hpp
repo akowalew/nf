@@ -15,9 +15,17 @@ class Address
 public:
 	using Rep = uint8_t;
 
+	Address() = default;
+
 	constexpr explicit Address(Rep value)
 		:	_value(value)
 	{}
+
+	constexpr Address& operator=(const Address& other)
+	{
+		_value = other._value;
+		return *this;
+	}
 
 	constexpr operator Rep() const
 	{
@@ -40,7 +48,7 @@ private:
 	Rep _value;
 };
 
-bool operator<(Address addr1, Address addr2)
+inline bool operator<(Address addr1, Address addr2)
 {
 	return addr1._value < addr2._value;
 }
