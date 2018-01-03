@@ -126,6 +126,7 @@ FrameParser::consume(uint8_t byte)
                 return Status::Bad;
             }
 
+            _state = State::StartByte;
             return Status::Good;
 
         default:
