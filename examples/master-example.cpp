@@ -28,11 +28,20 @@ int main(int argc, char** argv)
 		nfv2::SlaveEndpoint(nfv2::Address(0x01), sendHandler));
 
 	nfv2::Frame request;
-	request.address = nfv2::Address(0x01);
+	nfv2::Address address(0x01);
+	request.address = address;
 
 	nfv2::Message message;
 	message.code = 0x01;
 	request.messages.push_back(message);
 
-	master.send(request);
+	master.send(request, [](const auto& response) {
+		std::cout << "received response: \n" 
+			<< "\taddress: " << (int)response.address << '\n'
+			<< "\tmessages count: " << response.messages.size() << '\n';
+	});
+
+	etl::array<uint8_t, 7> buffer = 
+		{ '#', 6, static_cast<uint8_t>(~6), 1, 1, 0, 144 };
+	master.handleReceive(address, buffer.data(), buffer.size());
 }
