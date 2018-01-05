@@ -17,9 +17,9 @@ class FrameParser
 public:
     enum class Status
     {
-        Unknown,
         Good,
-        Bad
+        Bad,
+        Indeterminate
     };
 
     template<typename InputIterator>
@@ -31,13 +31,15 @@ public:
             const auto status = consume(*begin++);
             if(status == Status::Good || status == Status::Bad)
             {
-                _state = State::StartByte;
+                reset();
                 return std::make_pair(status, begin);
             }
         }
 
-        return std::make_pair(Status::Unknown, end);
+        return std::make_pair(Status::Indeterminate, end);
     }
+
+    void reset();
 
     const Frame& getFrame() const
     {

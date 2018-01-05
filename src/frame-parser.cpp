@@ -4,6 +4,11 @@
 
 namespace nfv2 {
 
+void FrameParser::reset()
+{
+    _state = State::StartByte;
+}
+
 FrameParser::Status 
 FrameParser::consume(uint8_t byte)
 {
@@ -17,7 +22,7 @@ FrameParser::consume(uint8_t byte)
 
             _state = State::FrameLength;
             
-            return Status::Unknown;
+            return Status::Indeterminate;
         
         case State::FrameLength:
             if(byte > Frame::MaxLength)
@@ -28,7 +33,7 @@ FrameParser::consume(uint8_t byte)
             _frameLength = byte;
             _state = State::FrameLengthBitwiseNegated;
 
-            return Status::Unknown;
+            return Status::Indeterminate;
 
         case State::FrameLengthBitwiseNegated:
             if(byte != static_cast<uint8_t>(~_frameLength))
@@ -38,7 +43,7 @@ FrameParser::consume(uint8_t byte)
 
             _state = State::Address;
 
-            return Status::Unknown;
+            return Status::Indeterminate;
 
         case State::Address:
             _frame.address = Address(byte);
@@ -46,7 +51,7 @@ FrameParser::consume(uint8_t byte)
             _state = State::MessageCode;
             _bytesCount = 4; // four bytes processed from now
 
-            return Status::Unknown;
+            return Status::Indeterminate;
 
         case State::MessageCode:
             if(_bytesCount++ >= _frameLength)
@@ -58,7 +63,7 @@ FrameParser::consume(uint8_t byte)
             _crc.step(byte);
             _state = State::MessageDataLength;
             
-            return Status::Unknown;
+            return Status::Indeterminate;
 
         case State::MessageDataLength:
             if(_bytesCount++ >= _frameLength
@@ -88,7 +93,7 @@ FrameParser::consume(uint8_t byte)
                 }
             }
 
-            return Status::Unknown;
+            return Status::Indeterminate;
 
         case State::MessageData:
             if(_bytesCount++ >= _frameLength
@@ -118,7 +123,7 @@ FrameParser::consume(uint8_t byte)
                 }
             }
 
-            return Status::Unknown;
+            return Status::Indeterminate;
         
         case State::Crc:
             if(byte != _crc.getRemainder())
@@ -126,7 +131,6 @@ FrameParser::consume(uint8_t byte)
                 return Status::Bad;
             }
 
-            _state = State::StartByte;
             return Status::Good;
 
         default:
