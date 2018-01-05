@@ -24,12 +24,12 @@ int main()
 		0x48  // crc
 	};
 
-	nfv2::FrameParser::Status status;
+	nfv2::FrameParser::Result result;
 	uint8_t* parsedIt;
-	std::tie(status, parsedIt) = 
+	std::tie(result, parsedIt) = 
 		frameParser.parse(buffer.begin(), buffer.end());
 
-	if(status == nfv2::FrameParser::Status::Good)
+	if(result == nfv2::FrameParser::Result::Good)
 	{
 		const auto& frame = frameParser.getFrame();
 		std::cout << "Frame good, "
@@ -50,7 +50,7 @@ int main()
 			std::cout << '\n';
 		}
 	}
-	else if(status == nfv2::FrameParser::Status::Bad)
+	else if(result == nfv2::FrameParser::Result::Bad)
 	{
 		std::cout << "Frame bad\n";
 	}

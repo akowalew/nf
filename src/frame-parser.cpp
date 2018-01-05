@@ -9,7 +9,7 @@ void FrameParser::reset()
     _state = State::StartByte;
 }
 
-FrameParser::Status 
+FrameParser::Result 
 FrameParser::consume(uint8_t byte)
 {
     switch(_state)
@@ -17,33 +17,33 @@ FrameParser::consume(uint8_t byte)
         case State::StartByte:
             if(byte != '#')
             {
-                return Status::Bad;
+                return Result::Bad;
             }
 
             _state = State::FrameLength;
             
-            return Status::Indeterminate;
+            return Result::Indeterminate;
         
         case State::FrameLength:
             if(byte > Frame::MaxLength)
             {
-                return Status::Bad;
+                return Result::Bad;
             }
 
             _frameLength = byte;
             _state = State::FrameLengthBitwiseNegated;
 
-            return Status::Indeterminate;
+            return Result::Indeterminate;
 
         case State::FrameLengthBitwiseNegated:
             if(byte != static_cast<uint8_t>(~_frameLength))
             {
-                return Status::Bad;
+                return Result::Bad;
             }
 
             _state = State::Address;
 
-            return Status::Indeterminate;
+            return Result::Indeterminate;
 
         case State::Address:
             _frame.address = Address(byte);
@@ -51,25 +51,25 @@ FrameParser::consume(uint8_t byte)
             _state = State::MessageCode;
             _bytesCount = 4; // four bytes processed from now
 
-            return Status::Indeterminate;
+            return Result::Indeterminate;
 
         case State::MessageCode:
             if(_bytesCount++ >= _frameLength)
             {
-                return Status::Bad;
+                return Result::Bad;
             }
 
             _message.code = byte;
             _crc.step(byte);
             _state = State::MessageDataLength;
             
-            return Status::Indeterminate;
+            return Result::Indeterminate;
 
         case State::MessageDataLength:
             if(_bytesCount++ >= _frameLength
                 || byte > Message::MaxDataLength)
             {
-                return Status::Bad;
+                return Result::Bad;
             }
 
             _message.data.resize(byte);
@@ -93,13 +93,13 @@ FrameParser::consume(uint8_t byte)
                 }
             }
 
-            return Status::Indeterminate;
+            return Result::Indeterminate;
 
         case State::MessageData:
             if(_bytesCount++ >= _frameLength
                 ||  _bufferIdx >= _message.data.size())
             {
-                return Status::Bad;
+                return Result::Bad;
             }
 
             _message.data[_bufferIdx++] = byte;
@@ -109,7 +109,7 @@ FrameParser::consume(uint8_t byte)
             {
                 if(_frame.messages.size() == Frame::MaxMessages)
                 {
-                    return Status::Bad;
+                    return Result::Bad;
                 }
 
                 _frame.messages.push_back(_message);
@@ -123,15 +123,15 @@ FrameParser::consume(uint8_t byte)
                 }
             }
 
-            return Status::Indeterminate;
+            return Result::Indeterminate;
         
         case State::Crc:
             if(byte != _crc.getRemainder())
             {
-                return Status::Bad;
+                return Result::Bad;
             }
 
-            return Status::Good;
+            return Result::Good;
 
         default:
         	assert(false && "Unexpected State in switch");
