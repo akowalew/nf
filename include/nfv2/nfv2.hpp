@@ -11,3 +11,4 @@
 #include "nfv2/frame-parser.hpp"
 #include "nfv2/frame.hpp"
 #include "nfv2/message.hpp"
+#include "nfv2/msgs/msgs.hpp"

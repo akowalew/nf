@@ -11,6 +11,10 @@
 
 namespace nfv2 {
 	
+/**
+ * Class for calculating CRC, used by nf protocol
+ * Uses CRC8 algorithm with 0xD8 polynomial
+ */
 class Crc
 {
 public:

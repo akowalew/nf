@@ -21,11 +21,11 @@ public:
 		:	_value(value)
 	{}
 
-	constexpr Address& operator=(const Address& other)
-	{
-		_value = other._value;
-		return *this;
-	}
+	// constexpr Address& operator=(const Address& other)
+	// {
+	// 	_value = other._value;
+	// 	return *this;
+	// }
 
 	constexpr operator Rep() const
 	{

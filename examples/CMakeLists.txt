@@ -26,3 +26,18 @@ set_target_properties(write-example PROPERTIES
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
+
+
+add_executable(msgs-write-example
+    msgs-write-example.cpp
+)
+
+target_link_libraries(msgs-write-example
+    nfv2
+)
+
+set_target_properties(msgs-write-example PROPERTIES
+    CXX_STANDARD 14
+    CXX_STANDARD_REQUIRED YES
+    CXX_EXTENSIONS NO
+)
