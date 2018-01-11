@@ -10,11 +10,17 @@ set(PROJECT_VERSION_MINOR 0)
 set(PROJECT_VERSION_PATCH 0)
 
 option(BUILD_EXAMPLES "Build examples of usage of NFv2" ON)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
+option(NFV2_ETL_PROFILE_PROVIDED 
+	"Use another etl_profile.h file for ETLCPP, instead of selected by this library" OFF)
 
 include_directories(etl/src)
-include_directories(etl/test)
+
+if(NOT NFV2_ETL_PROFILE_PROVIDED)
+	configure_file(etl/src/profiles/gcc_generic.h
+		${CMAKE_BINARY_DIR}/include/etl_profile.h
+		COPYONLY)
+	include_directories(${CMAKE_BINARY_DIR}/include)
+endif()
 
 include_directories(include)
 add_subdirectory(src)
