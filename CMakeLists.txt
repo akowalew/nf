@@ -16,12 +16,18 @@ option(NFV2_ETL_PROFILE_PROVIDED
 option(NFV2_ETL_PROVIDED
 	"Use other source of etlcpp library instead of placed in subdirectory" OFF)
 
+message(STATUS "NFV2_BUILD_EXAMPLES=${NFV2_BUILD_EXAMPLES}")
+message(STATUS "NFV2_ETL_PROFILE_PROVIDED=${NFV2_ETL_PROFILE_PROVIDED}")
+message(STATUS "NFV2_ETL_PROVIDED=${NFV2_ETL_PROVIDED}")
+
 if(NOT DEFINED NFV2_ETL_PATH)
 	if(NFV2_ETL_PROVIDED)
 		message(FATAL_ERROR "NFV2_ETL_PATH not specified")
 	else()
 		set(NFV2_ETL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/etl")
 	endif()
+else()
+	message(STATUS "NFV2_ETL_PATH=${NFV2_ETL_PATH}")
 endif()
 
 if(NOT NFV2_ETL_PROFILE_PROVIDED)
