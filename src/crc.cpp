@@ -6,17 +6,12 @@
 
 #include "nfv2/crc.hpp"
 
-#include <cstdint>
-#include <cstdlib>
-
-#define WIDTH 8
-
 namespace nfv2 {
-	
+    
 /**
  * Crc table calculated for polynomial 0xD8 (11011 followed by 0's)
  */
-static const uint8_t crcTable[256] = {
+const std::array<uint8_t, 256> Crc::crcTable = {
     0x00, 0xd8, 0x68, 0xb0, 0xd0, 0x08, 0xb8, 0x60, 
     0x78, 0xa0, 0x10, 0xc8, 0xa8, 0x70, 0xc0, 0x18, 
     0xf0, 0x28, 0x98, 0x40, 0x20, 0xf8, 0x48, 0x90, 
@@ -50,16 +45,5 @@ static const uint8_t crcTable[256] = {
     0x58, 0x80, 0x30, 0xe8, 0x88, 0x50, 0xe0, 0x38, 
     0x20, 0xf8, 0x48, 0x90, 0xf0, 0x28, 0x98, 0x40
 };
-
-void Crc::init(uint8_t data)
-{
-    _remainder = crcTable[data];
-}
-
-void Crc::step(uint8_t data)
-{
-    data = data ^ _remainder;
-    _remainder = crcTable[data] ^ (_remainder << 8);
-}
 
 } // namespace nfv2
