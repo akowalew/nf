@@ -15,37 +15,24 @@ class Address
 public:
 	using Rep = uint8_t;
 
-	Address() = default;
-
-	constexpr explicit Address(Rep value)
+	constexpr explicit Address(Rep value = 0)
 		:	_value(value)
 	{}
-
-	// constexpr Address& operator=(const Address& other)
-	// {
-	// 	_value = other._value;
-	// 	return *this;
-	// }
 
 	constexpr operator Rep() const
 	{
 		return _value;
 	}
 
-	static constexpr Address makeBroadcast()
+	static constexpr Address Broadcast()
 	{
 		return Address(0xFF);
 	}
 
-	constexpr bool isBroadcast() const
-	{
-		return _value == 0xFF;
-	}
-
-private:
 	friend bool operator<(Address addr1, Address addr2);
 
-	Rep _value;
+private:
+	Rep _value = 0;
 };
 
 inline bool operator<(Address addr1, Address addr2)
