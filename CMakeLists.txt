@@ -34,7 +34,7 @@ if(NOT NFV2_ETL_PROFILE_PROVIDED)
 	configure_file(${NFV2_ETL_PATH}/src/profiles/gcc_generic.h
 		${CMAKE_BINARY_DIR}/include/etl_profile.h
 		COPYONLY)
-	include_directories(${CMAKE_BINARY_DIR}/include)
+	include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 endif()
 
 include_directories(
