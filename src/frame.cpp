@@ -9,7 +9,7 @@
 
 namespace nfv2 {
 	
-size_t Frame::toBuffer(uint8_t* buffer, size_t size) const
+size_t Frame::toBuffer(uint8_t* buffer, size_t size) const noexcept
 {
 	assert(!messages.empty());
 	
@@ -21,13 +21,13 @@ size_t Frame::toBuffer(uint8_t* buffer, size_t size) const
 	*(buffer++) = frameLength;
 	*(buffer++) = ~frameLength;
 
-	Crc crc(address);
-	*(buffer++) = address;
+	Crc crc(address.getValue());
+	*(buffer++) = address.getValue();
 
 	for(const auto& message : messages)
 	{
-		crc.step(message.code);
-		*(buffer++) = message.code;
+		crc.step(message.code.getValue());
+		*(buffer++) = message.code.getValue();
 
 		const auto dataLength = message.data.size();
 		crc.step(dataLength);
@@ -45,7 +45,7 @@ size_t Frame::toBuffer(uint8_t* buffer, size_t size) const
 	return frameSize;
 }
 
-uint8_t Frame::getLength() const
+uint8_t Frame::getLength() const noexcept
 {
 	uint8_t messagesLength = 0;
 	for(const auto& message : messages)
