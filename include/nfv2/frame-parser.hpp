@@ -43,7 +43,7 @@ public:
      * at which it ended.
      */
     std::pair<Result, uint8_t*> 
-    parse(uint8_t* begin, uint8_t* end)
+    parse(uint8_t* begin, uint8_t* end) noexcept
     {
         while(begin != end)
         { 
@@ -61,14 +61,14 @@ public:
     /**
      * @brief Resets state machine to the beginning
      */
-    void reset();
+    void reset() noexcept;
 
     /**
      * @brief Returns Frame currently processed by parses
      * @details It should be called only after getting Result::Good in
      * in parse method, otherwise returned frame may be invalid or incomplete
      */
-    const Frame& getFrame() const
+    const Frame& getFrame() const noexcept
     {
         return _frame;
     }
@@ -95,7 +95,7 @@ private:
      * @param byte item to be parsed
      * @return current status of parsing
      */
-	Result consume(uint8_t byte);
+	Result consume(uint8_t byte) noexcept;
 
     State _state = State::StartByte;
     uint8_t _frameLength;

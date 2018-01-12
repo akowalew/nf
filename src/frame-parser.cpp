@@ -4,13 +4,13 @@
 
 namespace nfv2 {
 
-void FrameParser::reset()
+void FrameParser::reset() noexcept
 {
     _state = State::StartByte;
 }
 
 FrameParser::Result 
-FrameParser::consume(uint8_t byte)
+FrameParser::consume(uint8_t byte) noexcept
 {
     switch(_state)
     {
@@ -59,7 +59,7 @@ FrameParser::consume(uint8_t byte)
                 return Result::Bad;
             }
 
-            _message.code = byte;
+            _message.code = Code(byte);
             _crc.step(byte);
             _state = State::MessageDataLength;
             
