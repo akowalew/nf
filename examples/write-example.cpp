@@ -13,11 +13,9 @@
 
 int main(int argc, char** argv)
 {
-	nfv2::Frame frame;
-	frame.address = nfv2::Address(0x01);
+	nfv2::Frame frame{nfv2::Address(0x01)};
 
-	nfv2::Message message;
-	message.code = 0x01;
+	nfv2::Message message{nfv2::Code(0x01)};
 	message.data.push_back(0x01);
 	message.data.push_back(0x02);
 	frame.messages.push_back(message);

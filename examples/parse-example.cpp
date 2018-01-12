@@ -33,13 +33,14 @@ int main()
 	{
 		const auto& frame = frameParser.getFrame();
 		std::cout << "Frame good, "
-			<< "address: " << (int)frame.address << ", "
+			<< "address: " << (int)frame.address.getValue() << ", "
 			<< "messages size: " << frame.messages.size() << '\n';
 
 		int i = 0;
 		for(const auto& message : frame.messages)
 		{
 			std::cout << "message#" << i++ << ":\n"
+				<< "\tcode: " << (int)message.code.getValue() << '\n'
 				<< "\tdata length: " << message.data.size() << '\n'
 				<< "\tdata: "
 				<< std::hex << std::showbase;

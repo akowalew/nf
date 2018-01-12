@@ -13,8 +13,7 @@
 
 int main(int argc, char** argv)
 {
-	nfv2::Frame frame;
-	frame.address = nfv2::Address(0x01);
+	nfv2::Frame frame{nfv2::Address(0x01)};
 	frame.messages.push_back(nfv2::ReadDrivePositionCommand());
 	frame.messages.push_back(nfv2::ReadDriveStatusCommand());
 	frame.messages.push_back(nfv2::SetDriveModeCommand{nfv2::DriveMode::Speed});
