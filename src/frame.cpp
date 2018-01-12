@@ -50,7 +50,7 @@ uint8_t Frame::getLength() const noexcept
 	uint8_t messagesLength = 0;
 	for(const auto& message : messages)
 	{
-		messagesLength += message.getLength();
+		messagesLength += message.data.size() + 2; // data + dataLength + id
 	}
 
 	uint8_t frameLength = messagesLength + 4; // FL + ~FL + ADDR + CRC + MsL

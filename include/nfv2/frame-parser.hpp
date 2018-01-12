@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "optional.h"
+
 #include "nfv2/frame.hpp"
 #include "nfv2/message.hpp"
 #include "nfv2/crc.hpp"
@@ -70,7 +72,7 @@ public:
      */
     const Frame& getFrame() const noexcept
     {
-        return _frame;
+        return *_frame;
     }
 
 private:
@@ -100,10 +102,10 @@ private:
     State _state = State::StartByte;
     uint8_t _frameLength;
     uint8_t _bytesCount;
-    Message _message;
-    uint8_t _bufferIdx;
-    Crc _crc;
-    Frame _frame;
+    etl::optional<Message> _message;
+    Message::Data::iterator _dataIt;
+    etl::optional<Crc> _crc;
+    etl::optional<Frame> _frame;
 };
 
 } // namespace nfv2

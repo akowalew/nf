@@ -32,7 +32,6 @@ void writeMessage(Message& message, const T& t)
         std::is_empty<T>::value, 
         EmptyTag, 
         NonEmptyTag>());
-    message.id = Id(IdValue);
     message.data.resize(Size);
 
     static_assert(std::is_trivially_copyable<T>::value,
@@ -109,7 +108,7 @@ struct AnswerType \
     \
     Message toMessage() const \
     { \
-        Message message; \
+        Message message{Id(IdValue)}; \
         writeMessage(message); \
         return message; \
     } \
@@ -146,7 +145,7 @@ struct CommandType \
     \
     Message toMessage() const \
     { \
-        Message message; \
+        Message message{Id(IdValue)}; \
         writeMessage(message); \
         return message; \
     } \

@@ -15,7 +15,7 @@ FrameParser::consume(uint8_t byte) noexcept
     switch(_state)
     {
         case State::StartByte:
-            if(byte != '#')
+            if(byte != '#') // wrong start byte
             {
                 return Result::Bad;
             }
@@ -25,7 +25,7 @@ FrameParser::consume(uint8_t byte) noexcept
             return Result::Indeterminate;
         
         case State::FrameLength:
-            if(byte > Frame::MaxLength)
+            if(byte > Frame::MaxLength) // wrong frame length
             {
                 return Result::Bad;
             }
@@ -36,7 +36,7 @@ FrameParser::consume(uint8_t byte) noexcept
             return Result::Indeterminate;
 
         case State::FrameLengthBitwiseNegated:
-            if(byte != static_cast<uint8_t>(~_frameLength))
+            if(byte != static_cast<uint8_t>(~_frameLength)) // wrong format
             {
                 return Result::Bad;
             }
@@ -46,43 +46,43 @@ FrameParser::consume(uint8_t byte) noexcept
             return Result::Indeterminate;
 
         case State::Address:
-            _frame.address = Address(byte);
-            _crc.init(byte); // calculate CRC from address to last's message last data
+            _frame = Frame{Address(byte)};
+            _crc = Crc(byte); // calculate CRC from address to last's message last data
             _state = State::MessageId;
             _bytesCount = 4; // four bytes processed from now
 
             return Result::Indeterminate;
 
         case State::MessageId:
-            if(_bytesCount++ >= _frameLength)
+            if(_bytesCount++ >= _frameLength) // frame overflow
             {
                 return Result::Bad;
             }
 
-            _message.id = Id(byte);
-            _crc.step(byte);
+            _message = Message{Id(byte)};
+            _crc->step(byte);
             _state = State::MessageDataLength;
             
             return Result::Indeterminate;
 
         case State::MessageDataLength:
-            if(_bytesCount++ >= _frameLength
-                || byte > Message::MaxDataLength)
+            if(_bytesCount++ >= _frameLength // frame overflow
+                || byte > Message::MaxDataLength) // message length too big
             {
                 return Result::Bad;
             }
 
-            _message.data.resize(byte);
-            _crc.step(byte);
+            _message->data.resize(byte);
+            _crc->step(byte);
 
             if(byte != 0) // non-zero message data length
             {
-                _bufferIdx = 0;
+                _dataIt = _message->data.begin();
                 _state = State::MessageData;
             }
             else // empty message data
             {
-                _frame.messages.push_back(_message);
+                _frame->messages.push_back(*_message);
                 if(_bytesCount == _frameLength) // this was the last message
                 {
                     _state = State::Crc;
@@ -96,24 +96,24 @@ FrameParser::consume(uint8_t byte) noexcept
             return Result::Indeterminate;
 
         case State::MessageData:
-            if(_bytesCount++ >= _frameLength
-                ||  _bufferIdx >= _message.data.size())
+            if(_bytesCount++ >= _frameLength // frame overflow
+                ||  _dataIt == _message->data.end()) // message overflow
             {
                 return Result::Bad;
             }
 
-            _message.data[_bufferIdx++] = byte;
-            _crc.step(byte);
+            *(_dataIt++) = byte;
+            _crc->step(byte);
 
-            if(_bufferIdx == _message.data.size()) // if message data completed
+            if(_dataIt == _message->data.end()) // message completed
             {
-                if(_frame.messages.size() == Frame::MaxMessages)
+                if(_frame->messages.size() == Frame::MaxMessages) // messages overflow
                 {
                     return Result::Bad;
                 }
 
-                _frame.messages.push_back(_message);
-                if(_bytesCount == _frameLength) // this was the last message
+                _frame->messages.push_back(*_message);
+                if(_bytesCount == _frameLength) // messages completed
                 {
                     _state = State::Crc;
                 }
@@ -126,7 +126,7 @@ FrameParser::consume(uint8_t byte) noexcept
             return Result::Indeterminate;
         
         case State::Crc:
-            if(byte != _crc.getRemainder())
+            if(byte != _crc->getRemainder()) // wrong crc
             {
                 return Result::Bad;
             }

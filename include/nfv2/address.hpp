@@ -15,29 +15,37 @@ class Address
 public:
 	using Rep = uint8_t;
 
-	constexpr explicit Address(Rep value = 0)
+	constexpr explicit Address(Rep value) noexcept
 		:	_value(value)
 	{}
 
-	constexpr Rep getValue() const
-	{
-		return _value;
-	}
-
-	static constexpr Address Broadcast()
+	static constexpr Address Broadcast() noexcept
 	{
 		return Address(0xFF);
 	}
 
-	friend bool operator<(Address addr1, Address addr2);
+	constexpr Rep getValue() const noexcept
+	{
+		return _value;
+	}
+
+	constexpr bool operator<(Address other) noexcept
+	{
+		return _value < other._value;
+	}
+
+	constexpr bool operator==(Address other) const noexcept
+	{
+		return _value == other._value;
+	}
+
+	constexpr bool operator!=(Address other) const noexcept
+	{
+		return !(*this == other);
+	}
 
 private:
-	Rep _value = 0;
+	Rep _value;
 };
-
-inline bool operator<(Address addr1, Address addr2)
-{
-	return addr1._value < addr2._value;
-}
 
 } // namespace nfv2

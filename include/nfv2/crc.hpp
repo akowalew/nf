@@ -12,24 +12,19 @@
 namespace nfv2 {
     
 /**
- * Class for calculating CRC, used by nf protocol
+ * Class for calculating CRC
  * Uses CRC8 algorithm with 0xD8 polynomial
  */
 class Crc
 {
 public:
-    explicit constexpr Crc(uint8_t data = 0) noexcept
-        : _remainder(crcTable[data])
+    explicit constexpr Crc(uint8_t value) noexcept
+        :   _remainder(crcTable[value])
     {}
 
-    void init(uint8_t data) noexcept
+    void step(uint8_t value) noexcept
     {
-        _remainder = crcTable[data];
-    }
-
-    void step(uint8_t data) noexcept
-    {
-        _remainder = crcTable[data ^ _remainder];
+        _remainder = crcTable[value ^ _remainder];
     }
 
     uint8_t getRemainder() const noexcept

@@ -15,7 +15,7 @@ class Id
 public:
 	using Rep = uint8_t;
 
-	constexpr explicit Id(Rep value = 0) noexcept
+	constexpr explicit Id(Rep value) noexcept
 		:	_value(value)
 	{}
 
@@ -40,7 +40,7 @@ public:
 	}
 
 private:
-	Rep _value = 0;
+	Rep _value;
 };
 
 } // namespace nfv2

@@ -20,11 +20,6 @@ struct Message
 
     Id id;
     Data data;
-
-    uint8_t getLength() const noexcept
-    {
-    	return data.size() + 2; // data + dataLength + id;
-    }
 };
 
 } // namespace nfv2
