@@ -14,10 +14,8 @@
 int main(int argc, char** argv)
 {
 	nfv2::Frame frame{nfv2::Address(0x01)};
-	frame.messages.push_back(nfv2::ReadDrivePositionCommand());
-	frame.messages.push_back(nfv2::ReadDriveStatusCommand());
-	frame.messages.push_back(nfv2::SetDriveModeCommand{nfv2::DriveMode::Speed});
-	frame.messages.push_back(nfv2::SetDriveMiscCommand{nfv2::ResetSynchronized});
+	frame.messages.push_back(nfv2::SetDrivePwmCommand(0x6666).toMessage());	
+	frame.messages.push_back(nfv2::ReadDriveStatusCommand().toMessage());
 
 	std::array<uint8_t, 128> buffer;
 	const auto bytesWritten = 
