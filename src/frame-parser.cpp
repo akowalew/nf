@@ -48,18 +48,18 @@ FrameParser::consume(uint8_t byte) noexcept
         case State::Address:
             _frame.address = Address(byte);
             _crc.init(byte); // calculate CRC from address to last's message last data
-            _state = State::MessageCode;
+            _state = State::MessageId;
             _bytesCount = 4; // four bytes processed from now
 
             return Result::Indeterminate;
 
-        case State::MessageCode:
+        case State::MessageId:
             if(_bytesCount++ >= _frameLength)
             {
                 return Result::Bad;
             }
 
-            _message.code = Code(byte);
+            _message.id = Id(byte);
             _crc.step(byte);
             _state = State::MessageDataLength;
             
@@ -89,7 +89,7 @@ FrameParser::consume(uint8_t byte) noexcept
                 }
                 else // parse next message
                 {
-                    _state = State::MessageCode;
+                    _state = State::MessageId;
                 }
             }
 
@@ -119,7 +119,7 @@ FrameParser::consume(uint8_t byte) noexcept
                 }
                 else // parse next message
                 {
-                    _state = State::MessageCode;
+                    _state = State::MessageId;
                 }
             }
 

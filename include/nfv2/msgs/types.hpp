@@ -10,15 +10,15 @@ namespace nfv2 {
 struct CommandTag {};
 struct AnswerTag {};
 
-#define NFV2_COMMAND(CmdCode) \
+#define NFV2_COMMAND(IdValue) \
 public: \
-    constexpr static auto CommandCode = CmdCode; \
+    constexpr static auto CommandId = Id(IdValue); \
     using MessageCategory = CommandTag; \
     \
     void writeMessage(Message& message) const \
     { \
         using ThisType = std::remove_pointer<decltype(this)>::type; \
-	    message.code = CommandCode; \
+	    message.id = CommandId; \
 	    message.data.resize(sizeof(ThisType)); \
 	    \
 	    static_assert(std::is_trivially_copyable<ThisType>::value, \
@@ -29,7 +29,7 @@ public: \
     bool tryReadMessage(const Message& message) \
     { \
         using ThisType = std::remove_pointer<decltype(this)>::type; \
-	    if(message.code != CommandCode \
+	    if(message.id != CommandId \
 	        || message.data.size() != sizeof(ThisType)) \
 	    { \
 	        return false; \
@@ -48,15 +48,15 @@ public: \
         return message; \
     } \
 
-#define NFV2_ANSWER(AnsCode) \
+#define NFV2_ANSWER(IdValue) \
 public: \
-    constexpr static auto AnswerCode = AnsCode; \
+    constexpr static auto AnswerId = Id(IdValue); \
     using MessageCategory = AnswerTag; \
     \
     void writeMessage(Message& message) const \
     { \
         using ThisType = std::remove_pointer<decltype(this)>::type; \
-	    message.code = AnswerCode; \
+	    message.id = AnswerId; \
 	    message.data.resize(sizeof(ThisType)); \
 	    \
 	    static_assert(std::is_trivially_copyable<ThisType>::value, \
@@ -67,7 +67,7 @@ public: \
     bool tryReadMessage(const Message& message) \
     { \
         using ThisType = std::remove_pointer<decltype(this)>::type; \
-	    if(message.code != AnswerCode \
+	    if(message.id != AnswerId \
 	        || message.data.size() != sizeof(ThisType)) \
 	    { \
 	        return false; \

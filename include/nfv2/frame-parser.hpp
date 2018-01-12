@@ -83,7 +83,7 @@ private:
         FrameLength,
         FrameLengthBitwiseNegated,
         Address,
-        MessageCode,
+        MessageId,
         MessageDataLength,
         MessageData,
         Crc

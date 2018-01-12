@@ -26,8 +26,8 @@ size_t Frame::toBuffer(uint8_t* buffer, size_t size) const noexcept
 
 	for(const auto& message : messages)
 	{
-		crc.step(message.code.getValue());
-		*(buffer++) = message.code.getValue();
+		crc.step(message.id.getValue());
+		*(buffer++) = message.id.getValue();
 
 		const auto dataLength = message.data.size();
 		crc.step(dataLength);

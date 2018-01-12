@@ -8,22 +8,22 @@
 
 #include "vector.h" // ETLCPP
 
-#include "nfv2/code.hpp"
+#include "nfv2/id.hpp"
 
 namespace nfv2 {
 
 struct Message
 {
     constexpr static auto MaxDataLength = 8;
-    constexpr static auto MaxLength = MaxDataLength + 2; // data + dataLength + code
+    constexpr static auto MaxLength = MaxDataLength + 2; // data + dataLength + id
     using Data = etl::vector<uint8_t, MaxDataLength>;
 
-    Code code;
+    Id id;
     Data data;
 
     uint8_t getLength() const noexcept
     {
-    	return data.size() + 2; // data + dataLength + code;
+    	return data.size() + 2; // data + dataLength + id;
     }
 };
 

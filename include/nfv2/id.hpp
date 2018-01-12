@@ -1,6 +1,6 @@
 /**
- * code.hpp
- * Contains declaration of Code class
+ * id.hpp
+ * Contains declaration of Id class
  * Author: akowalew
  */
 
@@ -10,12 +10,12 @@
 
 namespace nfv2 {
 
-class Code
+class Id
 {
 public:
 	using Rep = uint8_t;
 
-	constexpr explicit Code(Rep value = 0) noexcept
+	constexpr explicit Id(Rep value = 0) noexcept
 		:	_value(value)
 	{}
 
@@ -24,17 +24,17 @@ public:
 		return _value;
 	}
 
-	constexpr bool operator<(Code other) const noexcept
+	constexpr bool operator<(Id other) const noexcept
 	{
 		return _value < other._value;
 	}
 
-	constexpr bool operator==(Code other) const noexcept
+	constexpr bool operator==(Id other) const noexcept
 	{
 		return _value == other._value;
 	}
 
-	constexpr bool operator!=(Code other) const noexcept
+	constexpr bool operator!=(Id other) const noexcept
 	{
 		return !(*this == other);
 	}

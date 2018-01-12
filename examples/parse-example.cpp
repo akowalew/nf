@@ -17,7 +17,7 @@ int main()
 		0x08, // frame length
 		0xf7, // bitwise negated frame length
 		0x01, // address
-		0x01, // message#0 code
+		0x01, // message#0 id
 		0x02, // message#0 data length
 		0x01, // message#0 data byte#0
 		0x02, // message#0 data byte#0
@@ -40,7 +40,7 @@ int main()
 		for(const auto& message : frame.messages)
 		{
 			std::cout << "message#" << i++ << ":\n"
-				<< "\tcode: " << (int)message.code.getValue() << '\n'
+				<< "\tid: " << (int)message.id.getValue() << '\n'
 				<< "\tdata length: " << message.data.size() << '\n'
 				<< "\tdata: "
 				<< std::hex << std::showbase;
