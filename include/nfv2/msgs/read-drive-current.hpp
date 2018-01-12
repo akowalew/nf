@@ -6,20 +6,20 @@
 
 namespace nfv2 {
 
-struct ReadDriveCurrentCommand
-{
-	NFV2_COMMAND(0x1B)
+using Current = int16_t;
 
+NFV2_ANSWER(ReadDriveCurrentAnswer, 0x1B)
+    ReadDriveCurrentAnswer() noexcept = default;
+
+    constexpr explicit ReadDriveCurrentAnswer(Current current) noexcept
+        :   current(current)
+    {}
+
+    Current current = 0;
+NFV2_ANSWER_END;
+
+NFV2_COMMAND(ReadDriveCurrentCommand, 0x1B, ReadDriveCurrentAnswer)
 	// empty command
-};
-
-struct ReadDriveCurrentAnswer
-{
-	NFV2_ANSWER(0x1B)
-
-	int16_t current;
-};
-
-// no answer specified
+NFV2_COMMAND_END;
 
 } // namespace nfv2

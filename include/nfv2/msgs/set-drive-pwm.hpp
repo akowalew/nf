@@ -5,14 +5,17 @@
 #include "nfv2/msgs/types.hpp"
 
 namespace nfv2 {
+
+using Pwm = int16_t;
 	
-struct SetDrivePwmCommand
-{
-	NFV2_COMMAND(0x14)
+NFV2_COMMAND(SetDrivePwmCommand, 0x14, NoAnswerTag)
+    SetDrivePwmCommand() noexcept = default;
 
-	int16_t pwm;	
-};
+    constexpr explicit SetDrivePwmCommand(Pwm pwm) noexcept
+        :   pwm(pwm)
+    {}
 
-// no answer specified
+	Pwm pwm;
+NFV2_COMMAND_END;
 
 } // namespace nfv2

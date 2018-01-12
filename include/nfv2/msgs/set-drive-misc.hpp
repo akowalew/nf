@@ -13,13 +13,14 @@ using DriveMisc = uint32_t;
 constexpr int32_t SetSynchronized   = (1 << 0);
 constexpr int32_t ResetSynchronized = (1 << 1);
 
-struct SetDriveMiscCommand
-{
-	NFV2_COMMAND(0x1E)
+NFV2_COMMAND(SetDriveDriveMiscCommand, 0x1E, NoAnswerTag)
+    SetDriveDriveMiscCommand() noexcept = default;
 
-	DriveMisc misc;
-};
+    constexpr explicit SetDriveDriveMiscCommand(DriveMisc driveMisc) noexcept
+        :   driveMisc(driveMisc)
+    {}
 
-// no answer specified
+	DriveMisc driveMisc;
+NFV2_COMMAND_END;
 
 } // namespace nfv2

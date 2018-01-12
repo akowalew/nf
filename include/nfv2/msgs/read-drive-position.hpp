@@ -6,20 +6,20 @@
 
 namespace nfv2 {
 
-struct ReadDrivePositionCommand
-{
-	NFV2_COMMAND(0x1A)
+using Position = int16_t;
 
+NFV2_ANSWER(ReadDrivePositionAnswer, 0x1A)
+    ReadDrivePositionAnswer() noexcept = default;
+
+    constexpr explicit ReadDrivePositionAnswer(Position position) noexcept
+        :   position(position)
+    {}
+
+    Position position = 0;
+NFV2_ANSWER_END;
+
+NFV2_COMMAND(ReadDrivePositionCommand, 0x1A, ReadDrivePositionAnswer)
 	// empty command
-};
-
-struct ReadDrivePositionAnswer
-{
-	NFV2_ANSWER(0x1A)
-
-	int32_t position;
-};
-
-// no answer specified
+NFV2_COMMAND_END;
 
 } // namespace nfv2

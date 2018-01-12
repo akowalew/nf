@@ -19,13 +19,14 @@ enum class DriveMode : uint8_t
 	SyncPos0 = 0x12
 };
 
-struct SetDriveModeCommand
-{
-	NFV2_COMMAND(0x10)
+NFV2_COMMAND(SetDriveDriveModeCommand, 0x10, NoAnswerTag)
+    SetDriveDriveModeCommand() noexcept = default;
 
-	DriveMode driveMode;	
-};
+    constexpr explicit SetDriveDriveModeCommand(DriveMode driveMode) noexcept
+        :   driveMode(driveMode)
+    {}
 
-// no answer specified
+	DriveMode driveMode;
+NFV2_COMMAND_END;
 
 } // namespace nfv2

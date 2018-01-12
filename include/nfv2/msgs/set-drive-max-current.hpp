@@ -6,13 +6,16 @@
 
 namespace nfv2 {
 
-struct SetDriveMaxCurrentCommand
-{
-	NFV2_COMMAND(0x15)
+using MaxCurrent = int16_t;
 
-	int16_t maxCurrent;
-};
+NFV2_COMMAND(SetDriveMaxCurrentCommand, 0x1F, NoAnswerTag)
+    SetDriveMaxCurrentCommand() noexcept = default;
 
-// no answer specified
+    constexpr explicit SetDriveMaxCurrentCommand(MaxCurrent maxCurrent) noexcept
+        :   maxCurrent(maxCurrent)
+    {}
+
+	MaxCurrent maxCurrent;
+NFV2_COMMAND_END;
 
 } // namespace nfv2
