@@ -37,11 +37,23 @@ if(NOT NFV2_ETL_PROFILE_PROVIDED)
 	include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 endif()
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
+	-std=gnu++14 \
+	-Wall \
+	-Wno-long-long \
+	-Werror \
+")
+
+enable_testing()
+add_subdirectory(unittest-cpp)
+include_directories(unittest-cpp)
+
 include_directories(
 	${NFV2_ETL_PATH}/src
 	include
 )
 add_subdirectory(src)
+add_subdirectory(test)
 
 if(NFV2_BUILD_EXAMPLES)
 	add_subdirectory(examples)
