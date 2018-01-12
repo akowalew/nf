@@ -19,7 +19,7 @@ public:
 		:	_value(value)
 	{}
 
-	constexpr operator Rep() const
+	constexpr Rep getValue() const
 	{
 		return _value;
 	}
