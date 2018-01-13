@@ -31,7 +31,18 @@ struct Frame
 
     size_t toBuffer(uint8_t* buffer, size_t size) const noexcept;
 
+private:
     uint8_t getLength() const noexcept;
 };
+
+inline bool operator==(const Frame& f1, const Frame& f2) noexcept
+{
+    return (f1.address == f2.address && f1.messages == f2.messages);
+}
+
+inline bool operator!=(const Frame& f1, const Frame& f2) noexcept
+{
+    return !(f1 == f2);
+}
 
 } // namespace nfv2

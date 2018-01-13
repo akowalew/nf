@@ -22,4 +22,14 @@ struct Message
     Data data;
 };
 
+inline bool operator==(const Message& msg1, const Message& msg2) noexcept
+{
+	return (msg1.id == msg2.id && msg1.data == msg2.data);
+}
+
+inline bool operator!=(const Message& msg1, const Message& msg2) noexcept
+{
+	return !(msg1 == msg2);
+}
+
 } // namespace nfv2
