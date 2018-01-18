@@ -42,6 +42,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
 	-Wall \
 	-Wno-long-long \
 	-Werror \
+	-fno-exceptions \
+	-fno-rtti \
+	-fno-unwind-tables \
+	-fno-asynchronous-unwind-tables \
 ")
 
 enable_testing()
