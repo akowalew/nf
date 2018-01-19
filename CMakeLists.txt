@@ -11,6 +11,8 @@ set(PROJECT_VERSION_PATCH 0)
 
 option(NFV2_BUILD_EXAMPLES
 	"Build examples of usage of NFv2" ON)
+option(NFV2_BUILD_TESTS
+	"Build test" ON)
 option(NFV2_ETL_PROFILE_PROVIDED 
 	"Use another etl_profile.h file for ETLCPP, instead of selected by this library" OFF)
 option(NFV2_ETL_PROVIDED
@@ -48,16 +50,19 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
 	-fno-asynchronous-unwind-tables \
 ")
 
-enable_testing()
-add_subdirectory(unittest-cpp)
-include_directories(unittest-cpp)
-
 include_directories(
 	${NFV2_ETL_PATH}/src
 	include
 )
+
+if(NFV2_BUILD_TESTS)
+	enable_testing()
+	add_subdirectory(unittest-cpp)
+	include_directories(unittest-cpp)
+	add_subdirectory(test)
+endif()
+
 add_subdirectory(src)
-add_subdirectory(test)
 
 if(NFV2_BUILD_EXAMPLES)
 	add_subdirectory(examples)
