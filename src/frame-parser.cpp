@@ -135,6 +135,7 @@ FrameParser::consume(uint8_t byte) noexcept
 
         default:
         	assert(false && "Unexpected State in switch");
+            return Result::Bad;
     }
 }
 
