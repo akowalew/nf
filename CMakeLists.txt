@@ -40,14 +40,14 @@ if(NOT NFV2_ETL_PROFILE_PROVIDED)
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
-	-std=gnu++14 \
-	-Wall \
-	-Wno-long-long \
-	-Werror \
-	-fno-exceptions \
-	-fno-rtti \
-	-fno-unwind-tables \
-	-fno-asynchronous-unwind-tables \
+-std=gnu++14 \
+-Wall \
+-Wno-long-long \
+-Werror \
+-fno-exceptions \
+-fno-rtti \
+-fno-unwind-tables \
+-fno-asynchronous-unwind-tables \
 ")
 
 include_directories(
