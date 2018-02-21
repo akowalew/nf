@@ -4,3 +4,6 @@
 [submodule "unittest-cpp"]
 	path = unittest-cpp
 	url = https://github.com/unittest-cpp/unittest-cpp.git
+[submodule "comms_champion"]
+	path = comms_champion
+	url = git@github.com:arobenko/comms_champion.git

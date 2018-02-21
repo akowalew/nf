@@ -1,6 +1,6 @@
 /**
  * example.cpp
- * Example of usage of NFv2 library in Slave 
+ * Example of usage of NFv2 library in Slave
  * Parsing input byte stream into a Frame
  * Author: akowalew
  */
@@ -12,7 +12,7 @@
 int main()
 {
 	nfv2::FrameParser frameParser;
-	std::array<uint8_t, 9> buffer{
+	std::array<uint8_t, 9> buffer{{
 		0x23, // start byte
 		0x08, // frame length
 		0xf7, // bitwise negated frame length
@@ -22,11 +22,11 @@ int main()
 		0x01, // message#0 data byte#0
 		0x02, // message#0 data byte#0
 		0x48  // crc
-	};
+	}};
 
 	nfv2::FrameParser::Result result;
 	uint8_t* parsedIt;
-	std::tie(result, parsedIt) = 
+	std::tie(result, parsedIt) =
 		frameParser.parse(buffer.begin(), buffer.end());
 
 	if(result == nfv2::FrameParser::Result::Good)

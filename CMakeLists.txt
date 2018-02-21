@@ -13,7 +13,7 @@ option(NFV2_BUILD_EXAMPLES
 	"Build examples of usage of NFv2" ON)
 option(NFV2_BUILD_TESTS
 	"Build test" ON)
-option(NFV2_ETL_PROFILE_PROVIDED 
+option(NFV2_ETL_PROFILE_PROVIDED
 	"Use another etl_profile.h file for ETLCPP, instead of selected by this library" OFF)
 option(NFV2_ETL_PROVIDED
 	"Use other source of etlcpp library instead of placed in subdirectory" OFF)
@@ -39,8 +39,19 @@ if(NOT NFV2_ETL_PROFILE_PROVIDED)
 	include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 endif()
 
+include_directories(
+	${NFV2_ETL_PATH}/src
+	comms_champion/comms/include
+)
+
+if(NFV2_BUILD_TESTS)
+	enable_testing()
+	add_subdirectory(unittest-cpp)
+	include_directories(unittest-cpp)
+endif()
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
--std=gnu++14 \
+-std=c++17 \
 -Wall \
 -Wno-long-long \
 -Werror \
@@ -51,14 +62,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
 ")
 
 include_directories(
-	${NFV2_ETL_PATH}/src
 	include
 )
 
 if(NFV2_BUILD_TESTS)
-	enable_testing()
-	add_subdirectory(unittest-cpp)
-	include_directories(unittest-cpp)
 	add_subdirectory(test)
 endif()
 
