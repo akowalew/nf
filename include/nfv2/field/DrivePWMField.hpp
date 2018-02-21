@@ -7,7 +7,7 @@
 namespace nfv2 {
 namespace field {
 
-using PWMField =
+using DrivePWMField =
 	comms::field::IntValue<
 		common::Field,
 		std::int16_t,

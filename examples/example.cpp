@@ -18,8 +18,8 @@ void setDrivePWMCmdWriteExample()
 {
 	std::cout << "Making SetDrivePWMCmd message" << std::endl;
 	SetDrivePWMCmd setDrivePWMCmd;
-	setDrivePWMCmd.field_pwm().value() = 1000;
-	assert(setDrivePWMCmd.field_pwm().valid());
+	setDrivePWMCmd.field_PWM().value() = 1000;
+	assert(setDrivePWMCmd.field_PWM().valid());
 
 	std::cout << "Writing message" << std::endl;
 	std::vector<std::uint8_t> outData;
@@ -40,8 +40,8 @@ void setDriveModeCmdWriteExample()
 {
 	std::cout << "Making SetDriveModeCmd message" << std::endl;
 	SetDriveModeCmd setDriveModeCmd;
-	setDriveModeCmd.field_mode().value() = nfv2::field::DriveMode::SyncPWM0;
-	assert(setDriveModeCmd.field_mode().valid());
+	setDriveModeCmd.field_DriveMode().value() = nfv2::field::DriveMode::SyncPWM0;
+	assert(setDriveModeCmd.field_DriveMode().valid());
 
 	std::cout << "Writing out message" << std::endl;
 	std::vector<std::uint8_t> outData;

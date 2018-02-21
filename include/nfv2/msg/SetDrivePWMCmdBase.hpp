@@ -4,7 +4,7 @@
 
 #include "nfv2/common/MsgId.hpp"
 #include "nfv2/common/SetterExtraOptions.hpp"
-#include "nfv2/field/PWMField.hpp"
+#include "nfv2/field/DrivePWMField.hpp"
 
 namespace nfv2 {
 namespace msg {
@@ -12,7 +12,7 @@ namespace msg {
 // fields for SetDrivePWMCmd message
 using SetDrivePWMCmdFields =
 	std::tuple<
-		field::PWMField
+		field::DrivePWMField
 	>;
 
 // declaration of SetDrivePWMCmdBase message.
@@ -28,7 +28,7 @@ class SetDrivePWMCmdBase
 		>
 {
 public:
-	COMMS_MSG_FIELDS_ACCESS(pwm);
+	COMMS_MSG_FIELDS_ACCESS(PWM);
 };
 
 } // namespace msg

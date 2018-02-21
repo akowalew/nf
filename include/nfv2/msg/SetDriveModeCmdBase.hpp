@@ -28,7 +28,7 @@ class SetDriveModeCmdBase
 		>
 {
 public:
-	COMMS_MSG_FIELDS_ACCESS(mode);
+	COMMS_MSG_FIELDS_ACCESS(DriveMode);
 };
 
 } // namespace msg
