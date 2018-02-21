@@ -63,12 +63,13 @@ void driveStatusFieldWriteExample()
 	std::cout << "Making DriveStatusField" << std::endl;
 
 	nfv2::field::DriveStatusField driveStatusField;
-	// driveStatusField.setBitValue_SpeedLimit(true);
-	// driveStatusField.setBitValue_Synchronized(true);
-	// driveStatusField.setBitValue_Error(true);
+	driveStatusField.setBitValue_SpeedLimit(true);
+	driveStatusField.setBitValue_Synchronized(true);
+	driveStatusField.setBitValue_Error(true);
 	driveStatusField.setBitValue_LimitSwitchUp(true);
 	driveStatusField.setBitValue_LimitSwitchDown(true);
 	driveStatusField.setBitValue_SynchroSwitch(true);
+	assert(driveStatusField.valid());
 
 	std::cout << "Writing out field" << std::endl;
 	std::vector<std::uint8_t> outData;

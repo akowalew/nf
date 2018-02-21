@@ -15,17 +15,17 @@ struct DriveStatusField
 		>
 {
 	COMMS_BITMASK_BITS(
-		LimitSwitchUp = (1 << 0),
-		LimitSwitchDown = (1 << 1),
-		SynchroSwitch = (1 << 2),
-		EncoderIndexSignal = (1 << 3),
-		Synchronized = (1 << 4),
-		PositionLimit = (1 << 10),
-		SpeedLimit = (1 << 11),
-		CurrentLimit = (1 << 12),
-		OverCurrent = (1 << 13),
-		PowerStageFault = (1 << 14),
-		Error = (1 << 15)
+		LimitSwitchUp = 0,
+		LimitSwitchDown = 1,
+		SynchroSwitch = 2,
+		EncoderIndexSignal = 3,
+		Synchronized = 4,
+		PositionLimit = 10,
+		SpeedLimit = 11,
+		CurrentLimit = 12,
+		OverCurrent = 13,
+		PowerStageFault = 14,
+		Error = 15
 	);
 
 	COMMS_BITMASK_BITS_ACCESS(
