@@ -9,14 +9,14 @@ namespace common {
 
 // extra options for setters messages in server or client version
 template<MessageMode TMessageMode>
-struct SetterExtraOptions
+struct MessageExtraOptions
 {
 	using Type = std::tuple<>;
 };
 
 // client only specialization, no need to read nor dispatch this command
 template<>
-struct SetterExtraOptions<MessageMode::ClientOnly>
+struct MessageExtraOptions<MessageMode::ClientOnly>
 {
 	using Type = std::tuple<
 		comms::option::NoReadImpl,
@@ -26,7 +26,7 @@ struct SetterExtraOptions<MessageMode::ClientOnly>
 
 // server only specialization, no need to write this command
 template<>
-struct SetterExtraOptions<MessageMode::ServerOnly>
+struct MessageExtraOptions<MessageMode::ServerOnly>
 {
 	using Type = std::tuple<
 		comms::option::NoWriteImpl

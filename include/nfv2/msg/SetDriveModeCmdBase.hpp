@@ -3,7 +3,7 @@
 #include "comms/comms.h"
 
 #include "nfv2/common/MsgId.hpp"
-#include "nfv2/common/SetterExtraOptions.hpp"
+#include "nfv2/common/MessageExtraOptions.hpp"
 #include "nfv2/field/DriveModeField.hpp"
 
 namespace nfv2 {
@@ -24,7 +24,7 @@ class SetDriveModeCmdBase
 			comms::option::StaticNumIdImpl<common::MsgId::SetDriveModeMsgId>,
 			comms::option::MsgType<SetDriveModeCmdBase<TMessage, TMessageMode>>,
 			comms::option::FieldsImpl<SetDriveModeCmdFields>,
-			typename common::SetterExtraOptions<TMessageMode>::Type
+			typename common::MessageExtraOptions<TMessageMode>::Type
 		>
 {
 public:

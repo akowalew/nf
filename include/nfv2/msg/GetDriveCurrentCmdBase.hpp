@@ -4,31 +4,30 @@
 
 #include "nfv2/common/MsgId.hpp"
 #include "nfv2/common/MessageExtraOptions.hpp"
-#include "nfv2/field/DrivePWMField.hpp"
 
 namespace nfv2 {
 namespace msg {
 
-// fields for SetDrivePWMCmd message
-using SetDrivePWMCmdFields =
+// fields for GetDriveCurrentCmd message
+using GetDriveCurrentCmdFields =
 	std::tuple<
-		field::DrivePWMField
+		// this command has no fields
 	>;
 
-// declaration of SetDrivePWMCmdBase message.
+// declaration of GetDriveCurrentCmdBase message.
 // Base class to implement client/server versions
 template<typename TMessage, common::MessageMode TMessageMode>
-class SetDrivePWMCmdBase
+class GetDriveCurrentCmdBase
 	:	public comms::MessageBase<
 			TMessage,
-			comms::option::StaticNumIdImpl<common::MsgId::SetDrivePwmMsgId>,
-			comms::option::MsgType<SetDrivePWMCmdBase<TMessage, TMessageMode>>,
-			comms::option::FieldsImpl<SetDrivePWMCmdFields>,
+			comms::option::StaticNumIdImpl<common::MsgId::GetDriveCurrentMsgId>,
+			comms::option::MsgType<GetDriveCurrentCmdBase<TMessage, TMessageMode>>,
+			comms::option::FieldsImpl<GetDriveCurrentCmdFields>,
 			typename common::MessageExtraOptions<TMessageMode>::Type
 		>
 {
 public:
-	COMMS_MSG_FIELDS_ACCESS(PWM);
+
 };
 
 } // namespace msg
