@@ -41,13 +41,13 @@ endif()
 
 include_directories(
 	${NFV2_ETL_PATH}/src
-	comms_champion/comms/include
+	${CMAKE_CURRENT_SOURCE_DIR}/comms_champion/comms/include
 )
 
 if(NFV2_BUILD_TESTS)
 	enable_testing()
-	add_subdirectory(unittest-cpp)
-	include_directories(unittest-cpp)
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/unittest-cpp)
+	include_directories(${CMAKE_CURRENT_SOURCE_DIR}/unittest-cpp)
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
@@ -62,15 +62,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
 ")
 
 include_directories(
-	include
+	${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 if(NFV2_BUILD_TESTS)
-	add_subdirectory(test)
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
 endif()
 
-add_subdirectory(src)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 if(NFV2_BUILD_EXAMPLES)
-	add_subdirectory(examples)
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/examples)
 endif()
