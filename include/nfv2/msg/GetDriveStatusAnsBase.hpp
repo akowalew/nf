@@ -3,7 +3,7 @@
 #include "comms/comms.h"
 
 #include "nfv2/common/MsgId.hpp"
-#include "nfv2/common/MessageExtraOptions.hpp"
+#include "nfv2/common/AnswerExtraOptions.hpp"
 #include "nfv2/field/DriveStatusField.hpp"
 
 namespace nfv2 {
@@ -24,7 +24,7 @@ class GetDriveStatusAnsBase
 			comms::option::StaticNumIdImpl<common::MsgId::GetDriveStatusMsgId>,
 			comms::option::MsgType<GetDriveStatusAnsBase<TMessage, TMessageMode>>,
 			comms::option::FieldsImpl<GetDriveStatusAnsFields>,
-			typename common::MessageExtraOptions<TMessageMode>::Type
+			typename common::AnswerExtraOptions<TMessageMode>::Type
 		>
 {
 public:
